@@ -1,21 +1,40 @@
-
 [package]
-name = "quickstock"
+name = "quickstock_rust"
 version = "0.1.0"
 edition = "2021"
-
-# Optional: Add a description, authors, and license
-description = "A Rust project for QuickStock"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Garrett Smith <your-email@example.com>"]
+description = "QuickStock: Inventory and Sales Management, rewritten in Rust"
 license = "MIT"
 
 [dependencies]
-# Add your dependencies here, for example:
-# serde = { version = "1.0", features = ["derive"] }
-# tokio = { version = "1", features = ["full"] }
+# Async runtime
+tokio = { version = "1.36", features = ["full"] }
+
+# Database handling with SQLite
+sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio-rustls", "macros"] }
+
+# GUI with egui + native window support via eframe
+eframe = "0.24"
+
+# Serialization / Deserialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# Encryption (AES-GCM)
+aes-gcm = "0.10"
+rand = "0.8"
+
+# Optional: base64 encoding/decoding for keys
+base64 = "0.22"
+
+# For development and debugging
+log = "0.4"
+env_logger = "0.10"
 
 [dev-dependencies]
-# Add development dependencies here, if needed
+# For async tests
+tokio = { version = "1.36", features = ["full"] }
 
-[build-dependencies]
-# Add build dependencies here, if needed
+# Include sqlx macros in tests
+sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio-rustls", "macros"] }
