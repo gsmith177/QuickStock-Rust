@@ -1,0 +1,21 @@
+
+[package]
+name = "quickstock"
+version = "0.1.0"
+edition = "2021"
+
+# Optional: Add a description, authors, and license
+description = "A Rust project for QuickStock"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+
+[dependencies]
+# Add your dependencies here, for example:
+# serde = { version = "1.0", features = ["derive"] }
+# tokio = { version = "1", features = ["full"] }
+
+[dev-dependencies]
+# Add development dependencies here, if needed
+
+[build-dependencies]
+# Add build dependencies here, if needed
