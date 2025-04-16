@@ -6,6 +6,6 @@ pub fn run() -> Result<(), eframe::Error> {
     eframe::run_native(
         "QuickStock Rust",
         options,
-        Box::new(|_cc| Box::new(MainWidget::new())),
+        Box::new(|_cc| Ok(Box::new(MainWidget::new()))),
     )
 }

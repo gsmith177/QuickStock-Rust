@@ -13,7 +13,7 @@ tokio = { version = "1", features = ["full"] }
 sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio"] }
 
 # GUI with egui + native window support via eframe
-eframe = "0.24"
+eframe = "0.31.1"
 
 # Serialization / Deserialization
 serde_json = "1.0"
@@ -35,3 +35,5 @@ tokio = { version = "1.36", features = ["full"] }
 
 # Include sqlx macros in tests
 sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio-rustls", "macros"] }
+
+winapi = { version = "0.3.9", features = ["winuser", "windef"] }

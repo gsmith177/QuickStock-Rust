@@ -1,25 +1,28 @@
-use eframe::egui::{self, Window};
+use eframe::egui::{self, Context, Window};
 
 pub struct Popup {
     pub open: bool,
-    pub message: String,
 }
 
 impl Popup {
-    pub fn new(message: &str) -> Self {
-        Self { open: true, message: message.to_string() }
+    pub fn new() -> Self {
+        Self { open: false }
     }
 
-    pub fn show(&mut self, ctx: &egui::Context) {
-        if self.open {
-            Window::new("Alert")
-                .open(&mut self.open)
-                .show(ctx, |ui| {
-                    ui.label(&self.message);
-                    if ui.button("OK").clicked() {
-                        self.open = false;
-                    }
-                });
-        }
+    pub fn show(&mut self, ctx: &Context) {
+        let mut is_open = self.open;
+
+        Window::new("My Popup")
+            .open(&mut is_open)
+            .show(ctx, |ui| {
+                ui.label("This is a popup!");
+
+                if ui.button("Close").clicked() {
+                    is_open = false;
+                }
+            });
+
+        // Reflect any changes made inside the popup back to self.open
+        self.open = is_open;
     }
 }

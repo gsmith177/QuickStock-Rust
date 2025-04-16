@@ -1,4 +1,4 @@
-/*
+"""
 !!! This is the old python code from the previous project !!!
 
 from PySide6.QtCore import Qt, QSize
@@ -126,4 +126,4 @@ class CentralWidget(QWidget):
     def message_action(message):
         print(message)
 
-*/
+"""
