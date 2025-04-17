@@ -3,7 +3,7 @@
 
 
 This project is for CS4340 at UCCS. We chose to change an opensource github project from Python to Rust (and some other things).
-##Dependancies
+## Dependancies
 Must have rust downloaded, all other dependancies should be installed when running the program.
 
 Download rust here (either 32 or 64 bit versions shoudl work): https://www.rust-lang.org/tools/install
