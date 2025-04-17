@@ -24,4 +24,6 @@ cargo run
 
 To terminate the program close the window normally (the X button in the top corner or the window) or terminate the process in the terminal (ctrl + C).
 
+
+## Original Project
 Here is the original project: https://github.com/Hamilton-Davis/Inventory-Intro-to-Software-Dev
