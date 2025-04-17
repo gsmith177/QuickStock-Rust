@@ -5,12 +5,12 @@
 This project is for CS4340 - Software Maintenance at UCCS. We chose to change an open source github project from Python to Rust (and some other things).
 
 
-## Dependancies
-Must have Rust downloaded, all other dependancies should be installed when running the program.
+## Dependencies
+Must have Rust downloaded, all other dependancies should be installed when running the program. To see all dependencies for this app, consult the cargo.toml file.
 
 **Download Rust here** (either 32 or 64 bit versions should work): https://www.rust-lang.org/tools/install
 
-Use the default intallation for this app.
+Use the default installation for this app.
 
 After installation, restart your IDE (we are using VScode). Then move on to the run instructions.
 
