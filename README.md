@@ -26,6 +26,11 @@ cargo run
 
 To terminate the program close the window normally (the X button in the top corner or the window) or terminate the process in the terminal (ctrl + C).
 
+### Other Documentation
+This is some other documentation that we found useful for this project:
+**Rust documentation:** https://doc.rust-lang.org/stable/
+
+**React documentation:** https://www.google.com/search?client=opera-gx&q=react+dosumentation&sourceid=opera&ie=UTF-8&oe=UTF-8
 
 ## Original Project
 Here is the original project: https://github.com/Hamilton-Davis/Inventory-Intro-to-Software-Dev
