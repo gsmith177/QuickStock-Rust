@@ -2,7 +2,9 @@
 
 
 
-This project is for CS4340 at UCCS. We chose to change an opensource github project from Python to Rust (and some other things).
+This project is for CS4340 - Software Maintenance at UCCS. We chose to change an open source github project from Python to Rust (and some other things).
+
+
 ## Dependancies
 Must have Rust downloaded, all other dependancies should be installed when running the program.
 
