@@ -10,7 +10,7 @@ Must have Rust downloaded, all other dependancies should be installed when runni
 
 Download rust here (either 32 or 64 bit versions should work): https://www.rust-lang.org/tools/install
 
-Use the defauld intallation for this app.
+Use the default intallation for this app.
 
 After installation, restart your IDE (we are using VScode). Then move on to the run instructions.
 
