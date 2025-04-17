@@ -8,7 +8,7 @@ This project is for CS4340 - Software Maintenance at UCCS. We chose to change an
 ## Dependancies
 Must have Rust downloaded, all other dependancies should be installed when running the program.
 
-**Download rust here** (either 32 or 64 bit versions should work): https://www.rust-lang.org/tools/install
+**Download Rust here** (either 32 or 64 bit versions should work): https://www.rust-lang.org/tools/install
 
 Use the default intallation for this app.
 
