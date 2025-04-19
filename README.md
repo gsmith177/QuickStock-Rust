@@ -15,7 +15,7 @@ Use the default installation for this app.
 After installation, restart your IDE (we are using VScode). Then move on to the run instructions.
 
 
-## Run Instructions
+## Run Backend Instructions
 To compose the proram on your machiene, go to ther terminal and execute these commands:
 ```
 cargo build
@@ -23,6 +23,26 @@ cargo build
 ```
 cargo run
 ```
+
+To terminate the program close the window normally (the X button in the top corner or the window) or terminate the process in the terminal (ctrl + C).
+
+## Run Frontend Instructions
+Firstly, make sure you have Node.js installed. You can check this by executing the following command in your terminal:
+```
+node -v
+```
+If Node.js is not installed, you can install it at https://nodejs.org/en.
+
+Execute the following commands to install dependencies:
+```
+npm install react-router-dom
+```
+
+Open a terminal and change the directory to the "Frontend" folder in the QuickStock-Rust project folder. Execute the following command:
+```
+npm start
+```
+If the window does not automatically navigate to your localhost, enter "http://localhost:3000/" into your browser of choice.
 
 To terminate the program close the window normally (the X button in the top corner or the window) or terminate the process in the terminal (ctrl + C).
 
