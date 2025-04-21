@@ -16,7 +16,7 @@ After installation, restart your IDE (we are using VScode). Then move on to the 
 
 
 ## Run Backend Instructions
-To compose the proram on your machiene, go to ther terminal and execute these commands:
+To compose the proram on your machiene, go to the terminal and execute these commands:
 ```
 cargo build
 ```
@@ -38,7 +38,7 @@ Execute the following commands to install dependencies:
 npm install react-router-dom
 ```
 
-Open a terminal and change the directory to the "Frontend" folder in the QuickStock-Rust project folder. Execute the following command:
+Open a terminal and change the directory to the "Frontend" folder (The path should be C:\...\QuickStock-Rust\Frontend\frontend) in the QuickStock-Rust project folder. Execute the following command:
 ```
 npm start
 ```
