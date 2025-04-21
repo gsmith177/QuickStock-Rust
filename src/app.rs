@@ -22,9 +22,8 @@ async fn update_credentials(form: web::Json<CredentialUpdate>) -> impl Responder
 pub async fn run() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-            .service(update_credentials)
     })
-    .bind(("127.0.0.1", 3000))?
+    .bind("127.0.0.1:8000")?  // 👈 This is the important part
     .run()
     .await
 }
