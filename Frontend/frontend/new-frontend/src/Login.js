@@ -11,12 +11,14 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'password') {
+    if (username === 'Admin' && password === 'Password') {
+      localStorage.setItem('loggedIn', 'true'); // Add basic session state
       navigate('/main');
     } else {
       setError('Invalid credentials. Try again.');
     }
   };
+  
 
   return (
     <div className="login-container">
