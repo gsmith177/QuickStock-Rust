@@ -13,6 +13,7 @@ sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio"] }
 actix-web = "4"
 eframe = "0.31.1"
 serde_json = "1.0"
+serde_derive = "1.0"
 toml = "0.8"
 aes-gcm = "0.10"
 rand = "0.8"
