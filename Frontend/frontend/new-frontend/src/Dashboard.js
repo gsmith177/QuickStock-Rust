@@ -24,26 +24,27 @@ function Dashboard() {
 
   // Fetch inventory from backend
   const fetchInventory = () => {
-    fetch('http://localhost:8080/products')
-      .then(res => {
-        if (!res.ok) throw new Error(`Server returned ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        setInventory(data);
-        setCurrentPage(0);
-        setShowInventory(true);
-      })
-      .catch(err => {
-        console.error("Error fetching inventory:", err);
-        alert("Failed to load inventory.");
-      });
+    fetch("http://localhost:8080/products")
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return res.json();
+    })
+    .then(data => {
+      setInventory(data);
+      setShowInventory(true);
+    })
+    .catch(err => {
+      console.error("Error fetching inventory:", err);
+      alert("Failed to load inventory.");
+    });
   };
   // Delete an item
   const handleDelete = (id) => {
     if (!window.confirm("Delete this item?")) return;
-    fetch(`http://localhost:8080/api/inventory/${id}`, { method: 'DELETE' })
-      .then(() => fetchInventory());
+    fetch(`http://localhost:8080/products/${id}`, { method: 'DELETE' })
+    .then(() => fetchInventory());
   };
 
   // Begin editing an item
@@ -59,7 +60,7 @@ function Dashboard() {
 
   // Save edited item
   const handleEditSave = () => {
-    fetch(`http://localhost:8080/api/inventory/${editingItem.id}`, {
+    fetch(`http://localhost:8080/products/${editingItem.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editForm)

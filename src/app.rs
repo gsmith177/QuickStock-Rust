@@ -9,7 +9,12 @@ pub async fn run() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .wrap(Cors::default())
+            .wrap(Cors::default()
+                .allowed_origin("http://localhost:3000")
+                .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+                .allowed_headers(vec!["Content-Type"])
+                .supports_credentials()
+    )
             .app_data(web::Data::new(pool.clone()))
             .service(get_inventory)
             .service(add_product)

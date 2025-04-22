@@ -19,6 +19,9 @@ pub async fn get_inventory(pool: web::Data<SqlitePool>) -> impl Responder {
     .fetch_all(pool.get_ref())
     .await;
 
+    println!("📥 Received request to /products");
+
+
     match products {
         Ok(products) => HttpResponse::Ok().json(products),
         Err(e) => {
@@ -68,6 +71,8 @@ pub async fn update_product(
     .bind(*id)
     .execute(pool.get_ref())
     .await;
+println!("➡️ Adding: {:?}", item);
+
 
     match result {
         Ok(_) => HttpResponse::Ok().body("Product updated"),
