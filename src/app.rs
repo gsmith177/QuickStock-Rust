@@ -1,29 +1,16 @@
-use actix_web::{post, web, App, HttpResponse, HttpServer, Responder};
-use serde::Deserialize;
-
-
-use auth::save_credentials;
-mod auth;
-
-#[derive(Deserialize)]
-struct CredentialUpdate {
-    username: String,
-    password: String,
-}
-
-#[post("/update-credentials")]
-async fn update_credentials(form: web::Json<CredentialUpdate>) -> impl Responder {
-    match save_credentials(&form.username, &form.password) {
-        Ok(_) => HttpResponse::Ok().body("Saved"),
-        Err(e) => HttpResponse::InternalServerError().body(format!("Failed: {}", e)),
-    }
-}
+use actix_web::{App, HttpServer, web, middleware::Logger};
+use crate::routes::get_inventory;
 
 pub async fn run() -> std::io::Result<()> {
+    env_logger::init();
+
     HttpServer::new(|| {
         App::new()
+            .wrap(Logger::default())
+            .wrap(actix_cors::Cors::permissive()) // Enable CORS
+            .service(get_inventory)
     })
-    .bind("127.0.0.1:8000")?  // 👈 This is the important part
+    .bind(("127.0.0.1", 8080))?
     .run()
     .await
 }
