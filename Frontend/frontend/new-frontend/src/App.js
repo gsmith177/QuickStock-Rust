@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Settings from './Settings';
+import Sales from './Sales';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('loggedIn') === 'true');
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={loggedIn ? <Navigate to="/main" /> : <Login onLogin={() => setLoggedIn(true)} />} />
         <Route path="/main" element={loggedIn ? <Dashboard /> : <Navigate to="/" />} />
         <Route path="/settings" element={loggedIn ? <Settings /> : <Navigate to="/" />} />
+        <Route path="/sales" element={loggedIn ? <Sales /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );
