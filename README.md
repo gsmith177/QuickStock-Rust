@@ -51,7 +51,10 @@ If Node.js is not installed, you can install it at https://nodejs.org/en.
 
 Execute the following commands to install dependencies:
 ```
+npm install dayjs
 npm install react-router-dom
+npm install @mui/x-charts@next
+npm install @mui/material @emotion/react @emotion/styled
 ```
 
 Open a terminal and change the directory to the "Frontend" folder (The path should be C:\...\QuickStock-Rust\Frontend\frontend\new-frontend) in the QuickStock-Rust project folder. Execute the following command:
