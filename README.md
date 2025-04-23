@@ -2,7 +2,7 @@
 
 
 
-This project is for CS4340 - Software Maintenance at UCCS. We chose to change an open source github project from Python to Rust (and some other things).
+This project is for CS4340 - Software Maintenance at UCCS. We chose to change an open source github project from Python to Rust and we also implemented the frontend using React.
 
 
 ## Dependencies
@@ -14,7 +14,7 @@ Use the default installation for this app.
 
 After installation, restart your IDE (we are using VScode). Then move on to the run instructions.
 
-## Prefered Running Method
+## Preferred Running Method
 After installing the app and the dependant files, navigate to the git bash for this project on your computer.
 If it is your first time running the app on your machiene, run the command:
 ```
