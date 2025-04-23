@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
+import './Settings.css';
+
 
 function Settings() {
   const [username, setUsername] = useState('');
@@ -26,28 +28,29 @@ function Settings() {
   };
 
   return (
-    <div>
-      <h2>Update Login Credentials</h2>
-      <input
-        type="text"
-        placeholder="New Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      /><br/>
-      <input
-        type="password"
-        placeholder="New Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      /><br/>
-      <button onClick={handleUpdate}>Update</button>
-      <p>{message}</p>
-
+    <div className="settings-wrapper">
+      <div className="settings-card">
+        <h2>Update Login Credentials</h2>
+        <input
+          type="text"
+          placeholder="New Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="New Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleUpdate}>Update</button>
+        {message && <p className="status-message">{message}</p>}
+      </div>
       <button className="return-button" onClick={() => window.location.href = '/main'}>
         Return to Main
       </button>
     </div>
-  );
+  );  
 }
 
 export default Settings;
