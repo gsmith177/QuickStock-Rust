@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 
 function Dashboard() {
@@ -93,6 +94,7 @@ function Dashboard() {
 
   // Close inventory modal
   const closeInventory = () => setShowInventory(false);
+  const navigate = useNavigate();
 
   return (
     <div className="App">
@@ -111,13 +113,13 @@ function Dashboard() {
 
         <section className="card">
           <h2>Sales</h2>
-          <button onClick={() => alert("View sales...")}>View Sales</button>
+          <button onClick={() => navigate('/sales')}>Sales</button>
           <button onClick={() => alert("Record sale...")}>Record Sale</button>
         </section>
 
         <section className="card">
           <h2>Settings</h2>
-          <button onClick={() => alert("Opening settings...")}>Open Settings</button>
+          <button onClick={() => navigate('/settings')}>Settings</button>
         </section>
       </main>
 
