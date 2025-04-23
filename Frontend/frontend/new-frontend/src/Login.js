@@ -2,7 +2,7 @@ import './Login.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({onLogin}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -12,7 +12,8 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (username === 'Admin' && password === 'Password') {
-      localStorage.setItem('loggedIn', 'true'); // Add basic session state
+      localStorage.setItem('loggedIn', 'true');
+      onLogin(); // Notify App.js
       navigate('/main');
     } else {
       setError('Invalid credentials. Try again.');
