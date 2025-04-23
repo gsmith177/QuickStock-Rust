@@ -14,8 +14,20 @@ Use the default installation for this app.
 
 After installation, restart your IDE (we are using VScode). Then move on to the run instructions.
 
+## Prefered Running Method
+After installing the app and the dependant files, navigate to the git bash for this project on your computer.
+If it is your first time running the app on your machiene, run the command:
+```
+chmod +x start.sh
+```
 
-## Run Backend Instructions
+After that, or if you have used the app before, run the following command to start thhe app:
+```
+./start.sh
+```
+If this does not work, proceed to run the backend and fontend independantly of eachother.
+
+### Run Backend Instructions
 To compose the proram on your machiene, go to the terminal and execute these commands:
 ```
 cargo build
@@ -26,7 +38,7 @@ cargo run
 
 To terminate the program close the window normally (the X button in the top corner or the window) or terminate the process in the terminal (ctrl + C).
 
-## Run Frontend Instructions
+### Run Frontend Instructions
 Firstly, make sure you have Node.js installed. You can check this by executing the following command in your terminal:
 ```
 node -v
