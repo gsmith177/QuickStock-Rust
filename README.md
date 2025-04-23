@@ -52,7 +52,7 @@ Execute the following commands to install dependencies:
 npm install react-router-dom
 ```
 
-Open a terminal and change the directory to the "Frontend" folder (The path should be C:\...\QuickStock-Rust\Frontend\frontend\new-frontendS) in the QuickStock-Rust project folder. Execute the following command:
+Open a terminal and change the directory to the "Frontend" folder (The path should be C:\...\QuickStock-Rust\Frontend\frontend\new-frontend) in the QuickStock-Rust project folder. Execute the following command:
 ```
 npm start
 ```

@@ -11,12 +11,30 @@ function Dashboard() {
 
   // Add Item state
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newItem, setNewItem] = useState({ name: '', category: '', price: '', stock: '' });
-
+  const [newItem, setNewItem] = useState({
+    name: '',
+    category: '',
+    quantity: '',
+    cost_price: '',
+    sell_price: '',
+    available: true,
+    date_stocked: '',
+    contact: '',
+    quantity_sold: ''
+  });
   // Edit Item state
   const [editingItem, setEditingItem] = useState(null);
-  const [editForm, setEditForm] = useState({ name: '', category: '', price: '', stock: '' });
-
+  const [editForm, setEditForm] = useState({
+    name: '', 
+    category: '', 
+    quantity: '', 
+    cost_price: '', 
+    sell_price: '',
+    available: true, 
+    date_stocked: '', 
+    contact: '', 
+    quantity_sold: ''
+  });
   // Logout
   const handleLogout = () => {
     localStorage.removeItem('loggedIn');
@@ -54,8 +72,13 @@ function Dashboard() {
     setEditForm({
       name: item.name,
       category: item.category,
-      price: item.price,
-      stock: item.stock
+      quantity: item.quantity,
+      cost_price: item.cost_price,
+      sell_price: item.sell_price,
+      available: item.available,
+      date_stocked: item.date_stocked,
+      contact: item.contact,
+      quantity_sold: item.quantity_sold
     });
   };
 
@@ -82,7 +105,17 @@ function Dashboard() {
       .then(res => {
         if (!res.ok) throw new Error(`Failed to add item: ${res.statusText}`);
         setShowAddForm(false);
-        setNewItem({ name: '', category: '', price: '', stock: '' });
+        setNewItem({ 
+          name: '',
+          category: '',
+          quantity: '',
+          cost_price: '',
+          sell_price: '',
+          available: true,
+          date_stocked: '',
+          contact: '',
+          quantity_sold: ''
+         });
         fetchInventory();
       })
       .catch(err => {
@@ -133,7 +166,7 @@ function Dashboard() {
                 .slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
                 .map(item => (
                   <li key={item.id}>
-                    {item.name} — {item.stock} (${item.price})
+                    {item.name} — {item.quantity} (${item.sell_price})
                     <button onClick={() => handleEdit(item)}>Edit</button>
                     <button onClick={() => handleDelete(item.id)}>Delete</button>
                   </li>
@@ -170,22 +203,53 @@ function Dashboard() {
               onChange={e => setNewItem({ ...newItem, category: e.target.value })}
             /><br/>
             <input
-              placeholder="Price"
+              placeholder="Quantity"
               type="number"
-              value={newItem.price}
-              onChange={e => setNewItem({ ...newItem, price: parseFloat(e.target.value) })}
+              value={newItem.quantity}
+              onChange={e => setNewItem({ ...newItem, quantity: parseInt(e.target.value) || 0 })}
             /><br/>
             <input
-              placeholder="Stock"
+              placeholder="Cost Price"
               type="number"
-              value={newItem.stock}
-              onChange={e => setNewItem({ ...newItem, stock: parseInt(e.target.value) })}
+              value={newItem.cost_price}
+              onChange={e => setNewItem({ ...newItem, cost_price: parseFloat(e.target.value) || 0 })}
+            /><br/>
+            <input
+              placeholder="Sell Price"
+              type="number"
+              value={newItem.sell_price}
+              onChange={e => setNewItem({ ...newItem, sell_price: parseFloat(e.target.value) || 0 })}
+            /><br/>
+            <label>
+              Available:
+              <input
+                type="checkbox"
+                checked={newItem.available}
+                onChange={e => setNewItem({ ...newItem, available: e.target.checked })}
+              />
+            </label><br/>
+            <input
+              placeholder="Date Stocked (YYYY-MM-DD)"
+              value={newItem.date_stocked}
+              onChange={e => setNewItem({ ...newItem, date_stocked: e.target.value })}
+            /><br/>
+            <input
+              placeholder="Contact"
+              value={newItem.contact}
+              onChange={e => setNewItem({ ...newItem, contact: e.target.value })}
+            /><br/>
+            <input
+              placeholder="Quantity Sold"
+              type="number"
+              value={newItem.quantity_sold}
+              onChange={e => setNewItem({ ...newItem, quantity_sold: parseInt(e.target.value) || 0 })}
             /><br/>
             <button onClick={handleAddItem}>Add</button>
             <button onClick={() => setShowAddForm(false)}>Cancel</button>
           </div>
         </div>
       )}
+
 
       {/* Edit Item Modal */}
       {editingItem && (
@@ -202,19 +266,46 @@ function Dashboard() {
             /><br/>
             <input
               type="number"
-              value={editForm.price}
-              onChange={e => setEditForm({ ...editForm, price: parseFloat(e.target.value) })}
+              value={editForm.quantity}
+              onChange={e => setEditForm({ ...editForm, quantity: parseInt(e.target.value) || 0 })}
             /><br/>
             <input
               type="number"
-              value={editForm.stock}
-              onChange={e => setEditForm({ ...editForm, stock: parseInt(e.target.value) })}
+              value={editForm.cost_price}
+              onChange={e => setEditForm({ ...editForm, cost_price: parseFloat(e.target.value) || 0 })}
+            /><br/>
+            <input
+              type="number"
+              value={editForm.sell_price}
+              onChange={e => setEditForm({ ...editForm, sell_price: parseFloat(e.target.value) || 0 })}
+            /><br/>
+            <label>
+              Available:
+              <input
+                type="checkbox"
+                checked={editForm.available}
+                onChange={e => setEditForm({ ...editForm, available: e.target.checked })}
+              />
+            </label><br/>
+            <input
+              value={editForm.date_stocked}
+              onChange={e => setEditForm({ ...editForm, date_stocked: e.target.value })}
+            /><br/>
+            <input
+              value={editForm.contact}
+              onChange={e => setEditForm({ ...editForm, contact: e.target.value })}
+            /><br/>
+            <input
+              type="number"
+              value={editForm.quantity_sold}
+              onChange={e => setEditForm({ ...editForm, quantity_sold: parseInt(e.target.value) || 0 })}
             /><br/>
             <button onClick={handleEditSave}>Save</button>
             <button onClick={() => setEditingItem(null)}>Cancel</button>
           </div>
         </div>
       )}
+
 
       <footer className="App-footer">
         <p>QuickStock Rust Edition &copy; 2025</p>
