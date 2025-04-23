@@ -60,6 +60,18 @@ If the window does not automatically navigate to your localhost, enter "http://l
 
 To terminate the program close the window normally (the X button in the top corner of the window) or terminate the process in the terminal (ctrl + C).
 
+## Once You Have the App Running...
+You should see a login page:
+![alt text](image.png)
+
+The default credientails are:
+Username: Admin
+Password: Password
+
+These credentials can be changes in the settings.
+
+If you would like to add information to your data, use the "Add Item" button. If you would like to view/edit/delete things from your data, use the "Display Inventory"  button. 
+The "Sales" Button will display your data in multiple graphs. "Record Sale" will allow you to record new sales for an item. 
 ## Other Documentation
 This is some other documentation that we found useful for this project:
 
