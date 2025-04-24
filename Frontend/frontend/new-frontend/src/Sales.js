@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Sales.css';
 import { LineChart } from '@mui/x-charts/LineChart';
 import dayjs from "dayjs";
-import { PieChart } from '@mui/x-charts';
+import { PieChart, BarChart, ScatterChart} from '@mui/x-charts';
 
 function Sales() {
   const [inventory, setInventory] = useState([]);
@@ -43,21 +43,24 @@ function Sales() {
     <div className="sales-wrapper">
       <div className="sales-grid">
         <div className="sales-box">
-          <label> Revenue Over Time </label>
-          <LineChart
-            xAxis={[
-              {
-                data: validDates.map(item => new Date(item.date_stocked)),
-                scaleType: "time",
-                valueFormatter: (date) => dayjs(date).format("MMM D")
-              },
-            ]}
+          <label>Revenue</label>
+          <BarChart
+            dataset={validDates}
             series={[
               {
                 data: validDates.map(item => ((item.sell_price) * (item.quantity_sold))),
+                label: "Total Sales",
               },
+              {
+                data: validDates.map(item => (item.cost_price)),
+                label: "Cost Price",
+              },
+              {
+                data: validDates.map(item => (item.sell_price)),
+                label: "Sell Price",
+              }
             ]}
-            height={300}
+            xAxis={[{ scaleType: 'band', dataKey: 'name' }]}
           />
         </div>
         <div className="sales-box">
@@ -77,7 +80,6 @@ function Sales() {
             ]}
             height={300}
           />
-
         </div>
         <div className="sales-box full-width">
           <label>Revenue Distribution by Product</label>
