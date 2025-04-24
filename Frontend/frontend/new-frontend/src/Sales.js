@@ -43,7 +43,7 @@ function Sales() {
     <div className="sales-wrapper">
       <div className="sales-grid">
         <div className="sales-box">
-          <label> Chart 1 </label>
+          <label> Revenue Over Time </label>
           <LineChart
             xAxis={[
               {
@@ -61,7 +61,7 @@ function Sales() {
           />
         </div>
         <div className="sales-box">
-          <label> Chart 2 </label>
+          <label> Units Sold Over Time </label>
           <LineChart
             xAxis={[
               {
@@ -80,7 +80,7 @@ function Sales() {
 
         </div>
         <div className="sales-box full-width">
-          <label>Chart 3</label>
+          <label>Revenue Distribution by Product</label>
           <PieChart
             series={[
               {
