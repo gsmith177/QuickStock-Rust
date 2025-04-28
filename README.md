@@ -57,7 +57,7 @@ npm install @mui/x-charts@next
 npm install @mui/material @emotion/react @emotion/styled
 ```
 
-Open a terminal and change the directory to the "Frontend" folder (The path should be C:\...\QuickStock-Rust\Frontend\frontend\new-frontend) in the QuickStock-Rust project folder. Execute the following command:
+Open a terminal and change the directory to the "Frontend" folder (The path should be C:\...\QuickStock-Rust\Frontend) in the QuickStock-Rust project folder. Execute the following command:
 ```
 npm start
 ```

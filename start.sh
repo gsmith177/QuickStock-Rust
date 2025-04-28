@@ -15,7 +15,7 @@ cargo run &
 BACKEND_PID=$!
 
 # === FRONTEND SETUP ===
-FRONTEND_DIR="Frontend/frontend/new-frontend"
+FRONTEND_DIR="Frontend"
 cd "$FRONTEND_DIR" || { echo "❌ Could not find frontend directory!"; exit 1; }
 
 echo "🚀 Checking Node.js installation..."
