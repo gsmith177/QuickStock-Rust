@@ -147,7 +147,6 @@ function Dashboard() {
         <section className="card">
           <h2>Sales</h2>
           <button onClick={() => navigate('/sales')}>Sales</button>
-          <button onClick={() => alert("Record sale...")}>Record Sale</button>
         </section>
 
         <section className="card">
