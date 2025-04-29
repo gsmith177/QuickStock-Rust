@@ -65,6 +65,15 @@ If the window does not automatically navigate to your localhost, enter "http://l
 
 To terminate the program terminate the process in the terminal (ctrl + C).
 
+**If you encounter the following error:**
+"Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
+options.allowedHosts[0] should be a non-empty string."
+
+Create a new file named ".env" in the Frontend folder and paste the following code into the file:
+```
+DANGEROUSLY_DISABLE_HOST_CHECK=true
+```
+
 ## Once You Have the App Running...
 You should see a login page:
 ![alt text](image.png)
