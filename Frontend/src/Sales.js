@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './Sales.css';
 import { LineChart } from '@mui/x-charts/LineChart';
 import dayjs from "dayjs";
-import { PieChart, BarChart} from '@mui/x-charts';
+import { PieChart, BarChart } from '@mui/x-charts';
 
 function Sales() {
   const [inventory, setInventory] = useState([]);
+  const [salesPerItem, setSalesPerItem] = useState([]);
+  const [profitPerItem, setProfitPerItem] = useState([]);
 
   useEffect(() => {
     fetchInventory();
@@ -44,21 +46,63 @@ function Sales() {
       }
       else {
         uniqueNames.push(item.name);
-        uniqueObjects.push({...item, quantity_sold: [item.quantity_sold],
+        uniqueObjects.push({
+          ...item, quantity_sold: [item.quantity_sold],
           date_stocked: [new Date(item.date_stocked)],
         });
       }
     }
-
     setInventory(uniqueObjects);
+    console.log(uniqueObjects)
+
+    let temp1 = [];
+    uniqueObjects.forEach(item => {
+      temp1[item.name] = item.date_stocked.map((date, index) =>
+      ({
+        date,
+        quantity: item.quantity_sold[index]
+      }))
+    });
+    setSalesPerItem(temp1);
+
+    let temp2 = {};
+    uniqueObjects.forEach(item => {
+      temp2[item.name] = item.date_stocked.map((date, index) =>
+      ({
+        date,
+        quantity: item.quantity_sold[index],
+        sell_price: item.sell_price
+      }));
+    });
+    setProfitPerItem(temp2);
   }
 
-  const salesOverTime = inventory.flatMap(item =>
-    item.date_stocked.map((date, index) => ({
-      date,
-      quantity: item.quantity_sold[index]
-    }))
-  )
+  // The following two functions were created using ChatGPT's assistance 
+  const getDates = (data) => {
+    const dates = new Set();
+    Object.values(data).forEach(points => {
+      points.forEach(point => dates.add(point.date.toISOString()));
+    });
+    return Array.from(dates)
+      .map(dateStr => new Date(dateStr))
+      .sort((a, b) => a - b);
+  };
+
+  const quantitiesWithDates = (points, allDates) => {
+    const quantitiesMapped = {};
+    points.forEach(dailyItem => {
+      quantitiesMapped[dailyItem.date.toISOString()] = dailyItem.quantity;
+    });
+    return allDates.map(date => quantitiesMapped[date.toISOString()] ?? 0);
+  };
+
+  const salesWithDates = (points, allDates) => {
+    const salesMapped = {};
+    points.forEach(dailyItem => {
+      salesMapped[dailyItem.date.toISOString()] = (dailyItem.quantity * dailyItem.sell_price);
+    });
+    return allDates.map(date => salesMapped[date.toISOString()] ?? 0);
+  };
 
   if (inventory.length === 0) return <div>Loading...</div>;
 
@@ -67,23 +111,19 @@ function Sales() {
       <div className="sales-grid">
         <div className="sales-box">
           <label>Revenue</label>
-          <BarChart
-            dataset={inventory}
-            series={[
+          <LineChart
+            xAxis={[
               {
-                data: inventory.map(item => item.sell_price * (item.quantity_sold.reduce((a, b) => a + b, 0))),
-                label: "Total Sales",
-              },
-              {
-                data: inventory.map(item => (item.cost_price)),
-                label: "Cost Price",
-              },
-              {
-                data: inventory.map(item => (item.sell_price)),
-                label: "Sell Price",
+                data: getDates(profitPerItem),
+                scaleType: "time",
+                valueFormatter: (date) => dayjs(date).format("MMM D")
               }
             ]}
-            xAxis={[{ scaleType: 'band', dataKey: 'name' }]}
+            series={Object.keys(profitPerItem).map((name) => ({
+              label: name,
+              data: salesWithDates(profitPerItem[name], getDates(profitPerItem)),
+            }))}
+            height={300}
           />
         </div>
         <div className="sales-box">
@@ -91,16 +131,15 @@ function Sales() {
           <LineChart
             xAxis={[
               {
-                data: salesOverTime.map(point => point.date),
+                data: getDates(salesPerItem),
                 scaleType: "time",
                 valueFormatter: (date) => dayjs(date).format("MMM D")
               }
             ]}
-            series={[
-              {
-                data: salesOverTime.map(point => point.quantity),
-              },
-            ]}
+            series={Object.keys(salesPerItem).map((name) => ({
+              label: name,
+              data: quantitiesWithDates(salesPerItem[name], getDates(salesPerItem)),
+            }))}
             height={300}
           />
         </div>

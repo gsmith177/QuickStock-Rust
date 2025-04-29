@@ -1,35 +1,70 @@
-/* Login.css */
+/* The following css was created with the assistance of ChatGPT */
 
-.login-container {
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 30px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+body {
+  margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.login-container h2 {
+.login-container {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  width: 300px;
   text-align: center;
 }
 
-.login-container label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
+.login-container h2 {
+  margin-bottom: 20px;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .login-container input[type="text"],
-.login-container input[type="password"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  box-sizing: border-box;
+.login-container input[type="password"],
+.login-container input[type="checkbox"] {
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 10px;
+  color: #fff;
+}
+
+.login-container input[type="checkbox"] {
+  width: auto;
+  margin-right: 5px;
+}
+
+.login-container label {
+  text-align: left;
+  font-size: 0.9em;
 }
 
 .login-container button {
-  margin-top: 15px;
-  width: 100%;
   padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+  background-color: #444;
+}
+
+.login-container p {
+  margin-top: 10px;
+  font-size: 0.85em;
 }

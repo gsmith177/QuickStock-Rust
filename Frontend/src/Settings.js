@@ -46,6 +46,7 @@ function Settings() {
         <button onClick={handleUpdate}>Update</button>
         {message && <p className="status-message">{message}</p>}
       </div>
+      <br></br>
       <button className="return-button" onClick={() => window.location.href = '/main'}>
         Return to Main
       </button>
