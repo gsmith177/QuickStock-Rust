@@ -1,0 +1,41 @@
+.sales-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 1rem;
+  }
+  
+  .sales-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 2rem;
+  }
+
+  label {
+    color: #3c3c3c
+  }
+  
+  .sales-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+  
+    width: 100%;
+  }
+    
+  .full-width {
+    grid-column: 1 / span 2;
+  }
+  

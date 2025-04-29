@@ -2,7 +2,7 @@
 
 
 
-This project is for CS4340 - Software Maintenance at UCCS. We chose to change an open source github project from Python to Rust (and some other things).
+This project is for CS4340 - Software Maintenance at UCCS. We chose to change an open source github project from Python to Rust and we also implemented the frontend using React.
 
 
 ## Dependencies
@@ -14,8 +14,23 @@ Use the default installation for this app.
 
 After installation, restart your IDE (we are using VScode). Then move on to the run instructions.
 
+## Preferred Running Method
+After installing the app and the dependant files, navigate to the git bash for this project on your computer.
+If it is your first time running the app on your machiene, run the command:
+```
+chmod +x start.sh
+```
 
-## Run Backend Instructions
+After that, or if you have used the app before, run the following command to start thhe app:
+```
+./start.sh
+```
+If this does not work, proceed to run the backend and fontend independantly of eachother.
+
+To terminate the program terminate the process in the terminal (ctrl + C).
+
+
+### Run Backend Instructions
 To compose the proram on your machiene, go to the terminal and execute these commands:
 ```
 cargo build
@@ -24,9 +39,10 @@ cargo build
 cargo run
 ```
 
-To terminate the program close the window normally (the X button in the top corner or the window) or terminate the process in the terminal (ctrl + C).
+To terminate the program terminate the process in the terminal (ctrl + C).
 
-## Run Frontend Instructions
+
+### Run Frontend Instructions
 Firstly, make sure you have Node.js installed. You can check this by executing the following command in your terminal:
 ```
 node -v
@@ -35,17 +51,41 @@ If Node.js is not installed, you can install it at https://nodejs.org/en.
 
 Execute the following commands to install dependencies:
 ```
+npm install dayjs
 npm install react-router-dom
+npm install @mui/x-charts@next
+npm install @mui/material @emotion/react @emotion/styled
 ```
 
-Open a terminal and change the directory to the "Frontend" folder (The path should be C:\...\QuickStock-Rust\Frontend\frontend) in the QuickStock-Rust project folder. Execute the following command:
+Open a terminal and change the directory to the "Frontend" folder (The path should be C:\...\QuickStock-Rust\Frontend) in the QuickStock-Rust project folder. Execute the following command:
 ```
 npm start
 ```
 If the window does not automatically navigate to your localhost, enter "http://localhost:3000/" into your browser of choice.
 
-To terminate the program close the window normally (the X button in the top corner or the window) or terminate the process in the terminal (ctrl + C).
+To terminate the program terminate the process in the terminal (ctrl + C).
 
+**If you encounter the following error:**
+"Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
+options.allowedHosts[0] should be a non-empty string."
+
+Create a new file named ".env" in the Frontend folder and paste the following code into the file:
+```
+DANGEROUSLY_DISABLE_HOST_CHECK=true
+```
+
+## Once You Have the App Running...
+You should see a login page:
+![alt text](image.png)
+
+The default credientails are:
+Username: Admin
+Password: Password
+
+These credentials can be changes in the settings.
+
+If you would like to add information to your data, use the "Add Item" button. If you would like to view/edit/delete things from your data, use the "Display Inventory"  button. 
+The "Sales" Button will display your data in multiple graphs. "Record Sale" will allow you to record new sales for an item. 
 ## Other Documentation
 This is some other documentation that we found useful for this project:
 

@@ -1,11 +1,49 @@
-use crate::mainwidget::MainWidget;
-use eframe::NativeOptions;
+use actix_cors::Cors;
+use actix_web::{App, HttpServer, web};
+use sqlx::SqlitePool;
+use crate::db::{InventoryDb, UserDb};
 
-pub fn run() -> Result<(), eframe::Error> {
-    let options = NativeOptions::default();
-    eframe::run_native(
-        "QuickStock Rust",
-        options,
-        Box::new(|_cc| Ok(Box::new(MainWidget::new()))),
-    )
+
+// Import all handlers
+use crate::routes::{
+    login,
+    update_user,
+    get_inventory,
+    add_product,
+    update_product,
+    delete_product,
+};
+
+pub async fn run() -> std::io::Result<()> {
+    let pool = SqlitePool::connect("sqlite:quickstock.db")
+        .await
+        .expect("Failed to connect to quickstock.db");
+
+    let user_pool = SqlitePool::connect("sqlite:user.db")
+        .await
+        .expect("Failed to connect to user.db");
+    
+    HttpServer::new(move || {
+        App::new()
+            .wrap(
+                Cors::default()
+                    .allowed_origin("http://localhost:3000")
+                    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+                    .allowed_headers(vec!["Content-Type"])
+                    .supports_credentials()
+            )
+            // Register each pool under its distinct type
+            .app_data(web::Data::new(InventoryDb(pool.clone())))
+            .app_data(web::Data::new(UserDb(user_pool.clone())))
+            // Mount your routes
+            .service(login)
+            .service(update_user)
+            .service(get_inventory)
+            .service(add_product)
+            .service(update_product)
+            .service(delete_product)
+    })
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }

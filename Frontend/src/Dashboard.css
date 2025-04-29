@@ -1,0 +1,162 @@
+/* The following css was created with the assistance of ChatGPT */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    height: 100vh;
+  }
+
+  .available-label {
+    color: #ffffff
+  }
+
+  h3 {
+    justify-self: center;
+  }
+
+  .Dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .Dashboard-header {
+    text-align: center;
+    padding: 30px 0 10px;
+  }
+  
+  .Dashboard-header h1 {
+    font-size: 42px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+  }
+  
+  .Dashboard-header p {
+    font-size: 1.1rem;
+    color: #cccccc;
+  }
+    
+  .Dashboard-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 40px 0;
+  }
+    
+  .card {
+    background-color: #3c3c3c;
+    border: none;
+    border-radius: 12px;
+    padding: 25px 20px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    color: #fff;
+  }
+      
+  .card h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: white;
+  }
+  
+  .card button {
+    background-color: #3b82f6;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card button:hover {
+    background-color: #2563eb;
+  }
+    
+  button.logout-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #3c3c3c;;
+    border: 1px solid #555;
+    padding: 10px 15px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  button.logout-btn:hover {
+    background-color: 
+    #444;
+  }
+
+  .logout-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .logout-btn {
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    float: right;
+  }
+  
+  .logout-btn:hover {
+    background-color: #dc2626;
+  }
+
+  .App-footer {
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9em;
+    color: #777;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 30, 30, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
+    max-height: 90vh;
+    overflow-y: auto;
+    color: #fff;
+    border: 1px solid #555;
+  }
+
+  .inventory-table {
+      width: 100%;
+      border-collapse: collapse;
+  }
+
+  .inventory-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }

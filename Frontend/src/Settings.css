@@ -1,0 +1,109 @@
+.settings-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: sans-serif;
+  }
+  
+  .settings-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .settings-container input {
+    width: 93%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .settings-container button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .settings-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .settings-container .return-button {
+    margin-top: 1rem;
+    background-color: #6c757d;
+  }
+  
+  .settings-container p {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .settings-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 1rem;
+  }
+  
+  .settings-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .settings-card input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+  
+  .settings-card button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .settings-card button:hover {
+    background-color: #0056b3;
+  }
+  
+  .status-message {
+    margin-top: 1rem;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  h2 {
+    color: #3c3c3c
+  }
+
+.settings-container p.success,
+.settings-container p.error {
+  color: #000 !important;
+}
