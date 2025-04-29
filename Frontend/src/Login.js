@@ -1,4 +1,3 @@
-// Frontend/src/Login.js
 import './Login.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,26 +12,23 @@ function Login({ onLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-
     try {
       const res = await fetch('http://localhost:8080/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',   // in case you later expand to cookies/sessions
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
 
       if (res.ok) {
-        // backend returned 200 = credentials match
         localStorage.setItem('loggedIn', 'true');
-        onLogin();               
-        navigate('/main');       // note: your App.js expects "/main"
+        localStorage.setItem('username', username);
+        onLogin();
+        navigate('/main');
       } else {
-        // 401 or other status
         setError('Invalid username or password');
       }
-    } catch (err) {
-      console.error('Login error:', err);
+    } catch {
       setError('Server error—please try again');
     }
   };
@@ -50,7 +46,6 @@ function Login({ onLogin }) {
             required
           />
         </label>
-
         <label>
           Password
           <input
@@ -60,19 +55,15 @@ function Login({ onLogin }) {
             required
           />
         </label>
-
         <label className="show-password">
           <input
             type="checkbox"
             checked={showPassword}
             onChange={() => setShowPassword(!showPassword)}
-          />{' '}
-          Show Password
+          /> Show Password
         </label>
-
         <button type="submit">Login</button>
       </form>
-
       {error && <p className="login-error">{error}</p>}
     </div>
   );

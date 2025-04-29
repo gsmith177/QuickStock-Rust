@@ -1,56 +1,108 @@
-import React, { useState } from 'react';
-import './App.css';
 import './Settings.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-
-function Settings() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+export default function Settings() {
+  const navigate = useNavigate();
+  const storedUsername = localStorage.getItem('username') || '';
+  const [oldUsername, setOldUsername] = useState(storedUsername);
+  const [newUsername, setNewUsername] = useState(storedUsername);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setError('');
+    setMessage('');
+
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
     try {
-      const res = await fetch('http://127.0.0.1:3000/update-credentials', {
-        method: 'POST',
+      const res = await fetch('http://localhost:8080/update_user', {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        credentials: 'include',
+        body: JSON.stringify({
+          old_username: oldUsername,
+          new_username: newUsername,
+          new_password: newPassword,
+        }),
       });
 
-      const text = await res.text();
       if (res.ok) {
-        setMessage('✅ Credentials updated successfully!');
+        localStorage.setItem('username', newUsername);
+        setMessage('Credentials updated successfully');
       } else {
-        setMessage(`❌ Error: ${text}`);
+        const text = await res.text();
+        setError(text || 'Update failed');
       }
-    } catch (err) {
-      setMessage(`❌ Failed to connect: ${err.message}`);
+    } catch {
+      setError('Server error—please try again');
     }
   };
 
-  return (
-    <div className="settings-wrapper">
-      <div className="settings-card">
-        <h2>Update Login Credentials</h2>
-        <input
-          type="text"
-          placeholder="New Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="New Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleUpdate}>Update</button>
-        {message && <p className="status-message">{message}</p>}
-      </div>
-      <button className="return-button" onClick={() => window.location.href = '/main'}>
-        Return to Main
-      </button>
-    </div>
-  );  
-}
+  const handleLogout = () => {
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('username');
+    navigate('/');
+  };
 
-export default Settings;
+  return (
+    <div className="settings-container">
+      <h2>Account Settings</h2>
+      <form onSubmit={handleUpdate}>
+        <label>
+          Old Username
+          <input
+            type="text"
+            value={oldUsername}
+            onChange={(e) => setOldUsername(e.target.value)}
+            required
+          />
+        </label>
+
+        <label>
+          New Username
+          <input
+            type="text"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+            required
+          />
+        </label>
+
+        <label>
+          New Password
+          <input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+          />
+        </label>
+
+        <label>
+          Confirm Password
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        </label>
+
+        <button type="submit">Update</button>
+      </form>
+
+      {message && <p className="success">{message}</p>}
+      {error && <p className="error">{error}</p>}
+
+      <button onClick={handleLogout}>Return</button>
+    </div>
+  );
+}

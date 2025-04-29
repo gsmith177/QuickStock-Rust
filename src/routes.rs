@@ -1,14 +1,11 @@
-// src/routes.rs
-
 use actix_web::{get, post, put, delete, web, Responder, HttpResponse};
-use bcrypt::verify;
 use serde::{Deserialize, Serialize};
 use sqlx::{SqlitePool, Row};
+use bcrypt::{verify, hash, DEFAULT_COST};
 
 //
 // 1) LOGIN HANDLER
 //
-
 #[derive(Deserialize)]
 pub struct LoginRequest {
     pub username: String,
@@ -20,28 +17,65 @@ pub async fn login(
     req: web::Json<LoginRequest>,
     user_pool: web::Data<SqlitePool>,
 ) -> impl Responder {
-    // Query the exact username (case-sensitive) from user.db
     let rec = sqlx::query("SELECT password_hash FROM users WHERE username = ?")
         .bind(&req.username)
         .fetch_one(user_pool.get_ref())
         .await;
 
     if let Ok(row) = rec {
-        let hash: String = row.try_get("password_hash").unwrap_or_default();
-        // Verify bcrypt password
-        if verify(&req.password, &hash).unwrap_or(false) {
+        let hash_str: String = row.try_get("password_hash").unwrap_or_default();
+        if verify(&req.password, &hash_str).unwrap_or(false) {
             return HttpResponse::Ok().body("Login successful");
         }
     }
-
-    // On any failure (no row or bad password):
     HttpResponse::Unauthorized().body("Invalid username or password")
 }
 
 //
-// 2) PRODUCT HANDLERS (unchanged)
+// 2) UPDATE USER HANDLER
 //
+#[derive(Deserialize)]
+pub struct UpdateUserRequest {
+    pub old_username: String,
+    pub new_username: String,
+    pub new_password: String,
+}
 
+#[put("/update_user")]
+pub async fn update_user(
+    req: web::Json<UpdateUserRequest>,
+    user_pool: web::Data<SqlitePool>,
+) -> impl Responder {
+    let new_hash = match hash(&req.new_password, DEFAULT_COST) {
+        Ok(h) => h,
+        Err(_) => {
+            eprintln!("Failed to hash new password");
+            return HttpResponse::InternalServerError().body("Hash error");
+        }
+    };
+
+    let result = sqlx::query(
+        "UPDATE users SET username = ?, password_hash = ? WHERE username = ?",
+    )
+    .bind(&req.new_username)
+    .bind(&new_hash)
+    .bind(&req.old_username)
+    .execute(user_pool.get_ref())
+    .await;
+
+    match result {
+        Ok(r) if r.rows_affected() == 1 => HttpResponse::Ok().body("User updated"),
+        Ok(_) => HttpResponse::NotFound().body("User not found"),
+        Err(e) => {
+            eprintln!("DB error updating user: {:?}", e);
+            HttpResponse::InternalServerError().body("Update failed")
+        }
+    }
+}
+
+//
+// 3) PRODUCT HANDLERS
+//
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct Product {
     pub id: Option<i64>,
@@ -58,23 +92,26 @@ pub struct Product {
 
 #[get("/products")]
 pub async fn get_inventory(pool: web::Data<SqlitePool>) -> impl Responder {
-    let products = sqlx::query_as::<_, Product>(
+    println!("🔍 GET /products — querying inventory DB now...");
+    let res = sqlx::query_as::<_, Product>(
         "SELECT id, name, category, quantity, cost_price, sell_price, available, \
          date_stocked, contact, quantity_sold FROM products ORDER BY id"
     )
     .fetch_all(pool.get_ref())
     .await;
 
-    println!("📥 Received request to /products");
-
-    match products {
-        Ok(products) => HttpResponse::Ok().json(products),
+    match res {
+        Ok(products) => {
+            println!("✅ /products returned {} rows", products.len());
+            HttpResponse::Ok().json(products)
+        }
         Err(e) => {
-            eprintln!("Database error: {:?}", e);
+            eprintln!("❌ /products query error: {:?}", e);
             HttpResponse::InternalServerError().body("Failed to retrieve products")
         }
     }
 }
+
 
 #[post("/products")]
 pub async fn add_product(
@@ -130,8 +167,6 @@ pub async fn update_product(
     .bind(*id)
     .execute(pool.get_ref())
     .await;
-
-    println!("➡️ Editing item: {:?}", item);
 
     match result {
         Ok(_) => HttpResponse::Ok().body("Product updated"),
