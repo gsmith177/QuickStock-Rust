@@ -159,7 +159,7 @@ function Sales() {
         </div>
       </div>
       <button className="return-button" onClick={() => window.location.href = '/main'}>
-        Return to Main
+        Return
       </button>
     </div>
   );

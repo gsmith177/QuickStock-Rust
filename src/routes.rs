@@ -1,6 +1,7 @@
+use crate::db::{InventoryDb, UserDb};
 use actix_web::{get, post, put, delete, web, Responder, HttpResponse};
 use serde::{Deserialize, Serialize};
-use sqlx::{SqlitePool, Row};
+use sqlx::Row;
 use bcrypt::{verify, hash, DEFAULT_COST};
 
 //
@@ -14,12 +15,13 @@ pub struct LoginRequest {
 
 #[post("/login")]
 pub async fn login(
+    db: web::Data<UserDb>,
     req: web::Json<LoginRequest>,
-    user_pool: web::Data<SqlitePool>,
 ) -> impl Responder {
+    let pool = &db.0;
     let rec = sqlx::query("SELECT password_hash FROM users WHERE username = ?")
         .bind(&req.username)
-        .fetch_one(user_pool.get_ref())
+        .fetch_one(pool)
         .await;
 
     if let Ok(row) = rec {
@@ -43,9 +45,11 @@ pub struct UpdateUserRequest {
 
 #[put("/update_user")]
 pub async fn update_user(
+    db: web::Data<UserDb>,
     req: web::Json<UpdateUserRequest>,
-    user_pool: web::Data<SqlitePool>,
 ) -> impl Responder {
+    let pool = &db.0;
+
     let new_hash = match hash(&req.new_password, DEFAULT_COST) {
         Ok(h) => h,
         Err(_) => {
@@ -60,7 +64,7 @@ pub async fn update_user(
     .bind(&req.new_username)
     .bind(&new_hash)
     .bind(&req.old_username)
-    .execute(user_pool.get_ref())
+    .execute(pool)
     .await;
 
     match result {
@@ -76,7 +80,6 @@ pub async fn update_user(
 //
 // 3) PRODUCT HANDLERS
 //
-
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct Product {
     pub id: Option<i64>,
@@ -92,18 +95,21 @@ pub struct Product {
 }
 
 #[get("/products")]
-pub async fn get_inventory(pool: web::Data<SqlitePool>) -> impl Responder {
+pub async fn get_inventory(
+    db: web::Data<InventoryDb>,
+) -> impl Responder {
+    let pool = &db.0;
     let products = sqlx::query_as::<_, Product>(
-        "SELECT id, name, category, quantity, cost_price, sell_price, available, date_stocked, contact, quantity_sold FROM products ORDER BY id"
+        "SELECT id, name, category, quantity, cost_price, sell_price, available, \
+         date_stocked, contact, quantity_sold \
+         FROM products ORDER BY id"
     )
-    .fetch_all(pool.get_ref())
+    .fetch_all(pool)
     .await;
 
-    println!("📥 Received request to /products");
-
     match products {
-        Ok(products) => HttpResponse::Ok().json(products),
-        Err(e) => {
+        Ok(list) => HttpResponse::Ok().json(list),
+        Err(e)  => {
             eprintln!("Database error: {:?}", e);
             HttpResponse::InternalServerError().body("Failed to retrieve products")
         }
@@ -112,11 +118,14 @@ pub async fn get_inventory(pool: web::Data<SqlitePool>) -> impl Responder {
 
 #[post("/products")]
 pub async fn add_product(
-    pool: web::Data<SqlitePool>,
+    db: web::Data<InventoryDb>,
     item: web::Json<Product>,
 ) -> impl Responder {
+    let pool = &db.0;
     let result = sqlx::query(
-        "INSERT INTO products (name, category, quantity, cost_price, sell_price, available, date_stocked, contact, quantity_sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO products \
+         (name, category, quantity, cost_price, sell_price, available, date_stocked, contact, quantity_sold) \
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     )
     .bind(&item.name)
     .bind(&item.category)
@@ -127,12 +136,12 @@ pub async fn add_product(
     .bind(&item.date_stocked)
     .bind(&item.contact)
     .bind(item.quantity_sold)
-    .execute(pool.get_ref())
+    .execute(pool)
     .await;
 
     match result {
         Ok(rec) => HttpResponse::Ok().json(rec.last_insert_rowid()),
-        Err(e) => {
+        Err(e)  => {
             eprintln!("Insert error: {:?}", e);
             HttpResponse::InternalServerError().body("Failed to add product")
         }
@@ -141,12 +150,16 @@ pub async fn add_product(
 
 #[put("/products/{id}")]
 pub async fn update_product(
-    pool: web::Data<SqlitePool>,
+    db: web::Data<InventoryDb>,
     id: web::Path<i64>,
     item: web::Json<Product>,
 ) -> impl Responder {
+    let pool = &db.0;
     let result = sqlx::query(
-        "UPDATE products SET name = ?, category = ?, quantity = ?, cost_price = ?, sell_price = ?, available = ?, date_stocked = ?, contact = ?, quantity_sold = ? WHERE id = ?"
+        "UPDATE products SET \
+         name = ?, category = ?, quantity = ?, cost_price = ?, sell_price = ?, \
+         available = ?, date_stocked = ?, contact = ?, quantity_sold = ? \
+         WHERE id = ?"
     )
     .bind(&item.name)
     .bind(&item.category)
@@ -158,10 +171,8 @@ pub async fn update_product(
     .bind(&item.contact)
     .bind(item.quantity_sold)
     .bind(*id)
-    .execute(pool.get_ref())
+    .execute(pool)
     .await;
-
-    println!("➡️ Editing item: {:?}", item);
 
     match result {
         Ok(_) => HttpResponse::Ok().body("Product updated"),
@@ -174,12 +185,13 @@ pub async fn update_product(
 
 #[delete("/products/{id}")]
 pub async fn delete_product(
-    pool: web::Data<SqlitePool>,
+    db: web::Data<InventoryDb>,
     id: web::Path<i64>,
 ) -> impl Responder {
+    let pool = &db.0;
     let result = sqlx::query("DELETE FROM products WHERE id = ?")
         .bind(*id)
-        .execute(pool.get_ref())
+        .execute(pool)
         .await;
 
     match result {

@@ -1,6 +1,7 @@
 mod load_data;
 mod routes;
 mod app;
+mod db;
 
 use std::path::Path;
 

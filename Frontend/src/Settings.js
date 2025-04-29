@@ -102,7 +102,10 @@ export default function Settings() {
       {message && <p className="success">{message}</p>}
       {error && <p className="error">{error}</p>}
 
-      <button onClick={handleLogout}>Return</button>
+      <button className="return-button" onClick={handleLogout}>
+        Return
+      </button>
+
     </div>
   );
 }
