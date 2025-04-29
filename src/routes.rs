@@ -1,6 +1,46 @@
+// src/routes.rs
+
 use actix_web::{get, post, put, delete, web, Responder, HttpResponse};
+use bcrypt::verify;
 use serde::{Deserialize, Serialize};
-use sqlx::SqlitePool;
+use sqlx::{SqlitePool, Row};
+
+//
+// 1) LOGIN HANDLER
+//
+
+#[derive(Deserialize)]
+pub struct LoginRequest {
+    pub username: String,
+    pub password: String,
+}
+
+#[post("/login")]
+pub async fn login(
+    req: web::Json<LoginRequest>,
+    user_pool: web::Data<SqlitePool>,
+) -> impl Responder {
+    // Query the exact username (case-sensitive) from user.db
+    let rec = sqlx::query("SELECT password_hash FROM users WHERE username = ?")
+        .bind(&req.username)
+        .fetch_one(user_pool.get_ref())
+        .await;
+
+    if let Ok(row) = rec {
+        let hash: String = row.try_get("password_hash").unwrap_or_default();
+        // Verify bcrypt password
+        if verify(&req.password, &hash).unwrap_or(false) {
+            return HttpResponse::Ok().body("Login successful");
+        }
+    }
+
+    // On any failure (no row or bad password):
+    HttpResponse::Unauthorized().body("Invalid username or password")
+}
+
+//
+// 2) PRODUCT HANDLERS (unchanged)
+//
 
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct Product {
@@ -19,7 +59,8 @@ pub struct Product {
 #[get("/products")]
 pub async fn get_inventory(pool: web::Data<SqlitePool>) -> impl Responder {
     let products = sqlx::query_as::<_, Product>(
-        "SELECT id, name, category, quantity, cost_price, sell_price, available, date_stocked, contact, quantity_sold FROM products ORDER BY id"
+        "SELECT id, name, category, quantity, cost_price, sell_price, available, \
+         date_stocked, contact, quantity_sold FROM products ORDER BY id"
     )
     .fetch_all(pool.get_ref())
     .await;
@@ -41,7 +82,9 @@ pub async fn add_product(
     item: web::Json<Product>,
 ) -> impl Responder {
     let result = sqlx::query(
-        "INSERT INTO products (name, category, quantity, cost_price, sell_price, available, date_stocked, contact, quantity_sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO products \
+         (name, category, quantity, cost_price, sell_price, available, date_stocked, \
+          contact, quantity_sold) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     )
     .bind(&item.name)
     .bind(&item.category)
@@ -71,7 +114,9 @@ pub async fn update_product(
     item: web::Json<Product>,
 ) -> impl Responder {
     let result = sqlx::query(
-        "UPDATE products SET name = ?, category = ?, quantity = ?, cost_price = ?, sell_price = ?, available = ?, date_stocked = ?, contact = ?, quantity_sold = ? WHERE id = ?"
+        "UPDATE products SET name = ?, category = ?, quantity = ?, cost_price = ?, \
+         sell_price = ?, available = ?, date_stocked = ?, contact = ?, quantity_sold = ? \
+         WHERE id = ?"
     )
     .bind(&item.name)
     .bind(&item.category)
