@@ -1,6 +1,81 @@
 use actix_web::{get, post, put, delete, web, Responder, HttpResponse};
 use serde::{Deserialize, Serialize};
-use sqlx::SqlitePool;
+use sqlx::{SqlitePool, Row};
+use bcrypt::{verify, hash, DEFAULT_COST};
+
+//
+// 1) LOGIN HANDLER
+//
+#[derive(Deserialize)]
+pub struct LoginRequest {
+    pub username: String,
+    pub password: String,
+}
+
+#[post("/login")]
+pub async fn login(
+    req: web::Json<LoginRequest>,
+    user_pool: web::Data<SqlitePool>,
+) -> impl Responder {
+    let rec = sqlx::query("SELECT password_hash FROM users WHERE username = ?")
+        .bind(&req.username)
+        .fetch_one(user_pool.get_ref())
+        .await;
+
+    if let Ok(row) = rec {
+        let hash_str: String = row.try_get("password_hash").unwrap_or_default();
+        if verify(&req.password, &hash_str).unwrap_or(false) {
+            return HttpResponse::Ok().body("Login successful");
+        }
+    }
+    HttpResponse::Unauthorized().body("Invalid username or password")
+}
+
+//
+// 2) UPDATE USER HANDLER
+//
+#[derive(Deserialize)]
+pub struct UpdateUserRequest {
+    pub old_username: String,
+    pub new_username: String,
+    pub new_password: String,
+}
+
+#[put("/update_user")]
+pub async fn update_user(
+    req: web::Json<UpdateUserRequest>,
+    user_pool: web::Data<SqlitePool>,
+) -> impl Responder {
+    let new_hash = match hash(&req.new_password, DEFAULT_COST) {
+        Ok(h) => h,
+        Err(_) => {
+            eprintln!("Failed to hash new password");
+            return HttpResponse::InternalServerError().body("Hash error");
+        }
+    };
+
+    let result = sqlx::query(
+        "UPDATE users SET username = ?, password_hash = ? WHERE username = ?",
+    )
+    .bind(&req.new_username)
+    .bind(&new_hash)
+    .bind(&req.old_username)
+    .execute(user_pool.get_ref())
+    .await;
+
+    match result {
+        Ok(r) if r.rows_affected() == 1 => HttpResponse::Ok().body("User updated"),
+        Ok(_) => HttpResponse::NotFound().body("User not found"),
+        Err(e) => {
+            eprintln!("DB error updating user: {:?}", e);
+            HttpResponse::InternalServerError().body("Update failed")
+        }
+    }
+}
+
+//
+// 3) PRODUCT HANDLERS
+//
 
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct Product {
