@@ -9,10 +9,12 @@ function Login({ onLogin }) {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Handle logic for logins
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     try {
+      // API call to the backend for login credentials
       const res = await fetch('http://localhost:8080/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -20,12 +22,14 @@ function Login({ onLogin }) {
         body: JSON.stringify({ username, password }),
       });
 
+      // Handle valid logins
       if (res.ok) {
         localStorage.setItem('loggedIn', 'true');
         localStorage.setItem('username', username);
         onLogin();
         navigate('/main');
       } else {
+        // Handle invalid logins
         setError('Invalid username or password');
       }
     } catch {
@@ -34,11 +38,13 @@ function Login({ onLogin }) {
   };
 
   return (
+    // Create outer login container
     <div className="login-container">
       <h2>Log In</h2>
       <form onSubmit={handleLogin}>
         <label>
           Username
+          {/* Handle changes to the username field */}
           <input
             type="text"
             value={username}
@@ -48,6 +54,7 @@ function Login({ onLogin }) {
         </label>
         <label>
           Password
+          {/* Handle changes to the password field */}
           <input
             type={showPassword ? 'text' : 'password'}
             value={password}
@@ -55,6 +62,7 @@ function Login({ onLogin }) {
             required
           />
         </label>
+        {/* Toggle password visibility */}
         <label className="show-password">
           <input
             type="checkbox"

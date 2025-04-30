@@ -12,6 +12,7 @@ export default function Settings() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
+  // Handle the updates for password and username changes
   const handleUpdate = async (e) => {
     e.preventDefault();
     setError('');
@@ -46,6 +47,7 @@ export default function Settings() {
     }
   };
 
+  // Navigate back to the starting page when logging out
   const handleLogout = () => {
     localStorage.removeItem('loggedIn');
     localStorage.removeItem('username');
@@ -55,7 +57,9 @@ export default function Settings() {
   return (
     <div className="settings-container">
       <h2>Account Settings</h2>
+      {/* When settings are changed, call handleUpdates to update the backend */}
       <form onSubmit={handleUpdate}>
+        {/* Input for the old username */}
         <label>
           Old Username
           <input
@@ -66,6 +70,7 @@ export default function Settings() {
           />
         </label>
 
+        {/* Input for the new username */}
         <label>
           New Username
           <input
@@ -76,6 +81,7 @@ export default function Settings() {
           />
         </label>
 
+        {/* Input for the new password */}
         <label>
           New Password
           <input
@@ -86,6 +92,7 @@ export default function Settings() {
           />
         </label>
 
+        {/* Input for re-inputting the new password */}
         <label>
           Confirm Password
           <input
@@ -96,9 +103,11 @@ export default function Settings() {
           />
         </label>
 
+        {/* Submission button */}
         <button type="submit">Update</button>
       </form>
 
+      {/* Notify user of success state */}
       {message && <p className="success">{message}</p>}
       {error && <p className="error">{error}</p>}
 

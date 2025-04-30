@@ -9,6 +9,7 @@ function Main() {
     <div className="main-wrapper">
       <div className="main-container">
         <h1>Main Menu</h1>
+        {/* Handle navigation between pages */}
         <button onClick={() => navigate('/sales')}>Sales</button>
         <button onClick={() => navigate('/inventory')}>Inventory</button>
         <button onClick={() => navigate('/settings')}>Settings</button>

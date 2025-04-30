@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import './Sales.css';
 import { LineChart } from '@mui/x-charts/LineChart';
 import dayjs from "dayjs";
-import { PieChart, BarChart } from '@mui/x-charts';
+import { PieChart } from '@mui/x-charts';
 
 function Sales() {
+  // Handle the inventory state and the arrays for the unique objects
   const [inventory, setInventory] = useState([]);
   const [salesPerItem, setSalesPerItem] = useState([]);
   const [profitPerItem, setProfitPerItem] = useState([]);
 
+  // On page load, call fetchInventory
   useEffect(() => {
     fetchInventory();
   }, []);
 
+  // Fetches the inventory from the backend
   const fetchInventory = () => {
     fetch("http://localhost:8080/products")
       .then(res => {
@@ -22,6 +25,7 @@ function Sales() {
         return res.json();
       })
       .then(data => {
+        // Call the functions to find unique items
         uniqueInventoryItems(data);
       })
       .catch(err => {
@@ -30,6 +34,7 @@ function Sales() {
       });
   };
 
+  // Goes through the inventory and removes repeated items
   const uniqueInventoryItems = (items) => {
 
     let uniqueNames = [];
@@ -40,10 +45,12 @@ function Sales() {
       const item = items[i];
       let index = uniqueNames.indexOf(item.name);
 
+      // Check if the item has already been added to the unique items list
       if (index !== -1) {
         uniqueObjects[index].quantity_sold.push(item.quantity_sold);
         uniqueObjects[index].date_stocked.push(new Date(item.date_stocked));
       }
+      // If the item is not in the unique items list, add it with quantity_sold and date_stocked as arrays
       else {
         uniqueNames.push(item.name);
         uniqueObjects.push({
@@ -53,8 +60,8 @@ function Sales() {
       }
     }
     setInventory(uniqueObjects);
-    console.log(uniqueObjects)
 
+    // Add all repeated items to their appropriate corresponding arrays for the quantity-date line graph
     let temp1 = [];
     uniqueObjects.forEach(item => {
       temp1[item.name] = item.date_stocked.map((date, index) =>
@@ -65,6 +72,7 @@ function Sales() {
     });
     setSalesPerItem(temp1);
 
+    // Add all repeated items to their appropriate corresponding arrays for the sales-date line graph
     let temp2 = {};
     uniqueObjects.forEach(item => {
       temp2[item.name] = item.date_stocked.map((date, index) =>
@@ -78,6 +86,7 @@ function Sales() {
   }
 
   // The following two functions were created using ChatGPT's assistance 
+  // Get all the dates from the item's array and sort them
   const getDates = (data) => {
     const dates = new Set();
     Object.values(data).forEach(points => {
@@ -88,6 +97,7 @@ function Sales() {
       .sort((a, b) => a - b);
   };
 
+  // Map all the points for the quantity-date line graph
   const quantitiesWithDates = (points, allDates) => {
     const quantitiesMapped = {};
     points.forEach(dailyItem => {
@@ -96,6 +106,7 @@ function Sales() {
     return allDates.map(date => quantitiesMapped[date.toISOString()] ?? 0);
   };
 
+  // Map all the points for the sales-date line graph
   const salesWithDates = (points, allDates) => {
     const salesMapped = {};
     points.forEach(dailyItem => {
@@ -104,14 +115,17 @@ function Sales() {
     return allDates.map(date => salesMapped[date.toISOString()] ?? 0);
   };
 
+  // Maintain a loading screen when the inventory cannot be loaded
   if (inventory.length === 0) return <div>Loading...</div>;
 
   return (
     <div className="sales-wrapper">
       <div className="sales-grid">
+        {/* Box for the quantity-date line graph */}
         <div className="sales-box">
           <label>Revenue</label>
           <LineChart
+            // Plot the quantity sold (y-axis) against the dates (x-axis)
             xAxis={[
               {
                 data: getDates(profitPerItem),
@@ -126,9 +140,11 @@ function Sales() {
             height={300}
           />
         </div>
+        {/* Box for the sales-date line graph */}
         <div className="sales-box">
           <label> Units Sold Over Time </label>
           <LineChart
+            // Plot the profit (y-axis) against the dates (x-axis)
             xAxis={[
               {
                 data: getDates(salesPerItem),
@@ -143,11 +159,13 @@ function Sales() {
             height={300}
           />
         </div>
+        {/* Box for the pie chart comparing item sales*/}
         <div className="sales-box full-width">
           <label>Revenue Distribution by Product</label>
           <PieChart
             series={[
               {
+                // Pie chart includes the profit for each item
                 data: inventory.map(item => ({
                   id: item.id,
                   value: item.sell_price * item.quantity_sold.reduce((a, b) => a + b, 0),

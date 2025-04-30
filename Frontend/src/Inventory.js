@@ -2,9 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
 
-
 function Inventory() {
   const navigate = useNavigate();
+
+  // Since the inventory mainly consists of pop ups, there are minimal additions
+  // needed to this component
 
   return (
     <div>
