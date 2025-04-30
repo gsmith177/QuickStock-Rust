@@ -1,6 +1,6 @@
 # QuickStock-Rust
 
-
+# Designed to Run on Visual Studio Code (VS Code)
 
 This project is for CS4340 - Software Maintenance at UCCS. We chose to change an open source github project from Python to Rust and we also implemented the frontend using React.
 
