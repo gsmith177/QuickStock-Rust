@@ -154,11 +154,12 @@ function Dashboard() {
         </section>
       </main>
 
-      {/* Inventory Modal */}
+      {/* Inventory Display */}
       {showInventory && (
         <div className="modal">
           <div className="modal-content">
             <h3>Inventory List</h3>
+            {/* Table for displaying inventory items and their properties */}
             <table className="inventory-table">
               <thead>
                 <tr>
@@ -200,7 +201,7 @@ function Dashboard() {
         </div>
       )}
 
-      {/* Add Item Modal */}
+      {/* Add Item */}
       {showAddForm && (
         <div className="modal">
           <div className="modal-content">
@@ -263,8 +264,7 @@ function Dashboard() {
         </div>
       )}
 
-
-      {/* Edit Item Modal */}
+      {/* Edit Item */}
       {editingItem && (
         <div className="modal">
           <div className="modal-content">
@@ -319,6 +319,7 @@ function Dashboard() {
         </div>
       )}
 
+      {/* Handle Logouts */}
       <div class="logout-container">
         <button class="logout-btn" onClick={handleLogout}>Logout</button>
       </div>
