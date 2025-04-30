@@ -15,7 +15,7 @@
   }
   
   .settings-container input {
-    width: 100%;
+    width: 93%;
     padding: 0.75rem;
     margin: 0.5rem 0;
     font-size: 1rem;
@@ -106,3 +106,8 @@
   h2 {
     color: #3c3c3c
   }
+
+.settings-container p.success,
+.settings-container p.error {
+  color: #000 !important;
+}

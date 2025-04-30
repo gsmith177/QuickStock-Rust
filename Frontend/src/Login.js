@@ -2,59 +2,69 @@ import './Login.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login({onLogin}) {
+function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username === 'Admin' && password === 'Password') {
-      localStorage.setItem('loggedIn', 'true');
-      onLogin(); // Notify App.js
-      navigate('/main');
-    } else {
-      setError('Invalid credentials. Try again.');
+    setError('');
+    try {
+      const res = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (res.ok) {
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('username', username);
+        onLogin();
+        navigate('/main');
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch {
+      setError('Server error—please try again');
     }
   };
-  
 
   return (
     <div className="login-container">
-      <h2>Quick-Stock</h2>
-      <h2>Sign in</h2>
+      <h2>Log In</h2>
       <form onSubmit={handleLogin}>
-        <label>Username:</label>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-
-        <label>Password:</label>
-        <input
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
         <label>
+          Username
+          <input
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
+        </label>
+        <label className="show-password">
           <input
             type="checkbox"
             checked={showPassword}
             onChange={() => setShowPassword(!showPassword)}
-          />{' '}
-          Show Password
+          /> Show Password
         </label>
-
         <button type="submit">Login</button>
       </form>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="login-error">{error}</p>}
     </div>
   );
 }
