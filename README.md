@@ -95,3 +95,60 @@ This is some other documentation that we found useful for this project:
 
 ## Original Project
 Here is the original project: https://github.com/Hamilton-Davis/Inventory-Intro-to-Software-Dev
+
+
+
+## Running Tests
+
+This project includes a complete suite of unit and integration tests to verify backend functionality, including:
+
+- Login authentication
+- Product database operations
+- HTTP endpoint responses
+
+All tests are designed to run in **isolation** using **in-memory SQLite databases**, ensuring that no real data is modified or required.
+
+###  Test Types
+
+| File                     | Description                                                        |
+|--------------------------|--------------------------------------------------------------------|
+| `tests/integration_tests.rs` | Tests API endpoints such as `/health` and `/products`               |
+| `tests/db_tests.rs`           | Tests inserting and retrieving products in a temporary SQLite database |
+| `tests/auth_tests.rs`         | Tests login logic for valid, invalid, and unknown users              |
+
+### 🔧 Requirements
+
+Before running tests, ensure:
+- Rust is installed (`cargo` command available)
+- You are in the project root (where `Cargo.toml` is located)
+
+No actual `.db` files are required to run the tests.
+
+###  Run All Tests
+
+Run the following command in your terminal:
+
+```bash
+cargo test
+```
+
+This command will compile the code and run all tests across the project.
+
+###  Sample Output
+
+```
+running 6 tests
+test test_valid_login ... ok
+test test_invalid_password ... ok
+test test_unknown_user ... ok
+test test_user_db_insert_and_query ... ok
+test test_health_check_endpoint ... ok
+test test_products_endpoint ... ok
+
+test result: ok. 6 passed; 0 failed
+```
+
+Each test is fast and reliable, making it easy to validate core logic before committing changes or releasing new builds.
+```
+
+You can now copy and paste this directly into your `README.md` to ensure it renders cleanly on GitHub. Let me know if you want this section collapsible or styled with badges.
