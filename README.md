@@ -95,3 +95,92 @@ This is some other documentation that we found useful for this project:
 
 ## Original Project
 Here is the original project: https://github.com/Hamilton-Davis/Inventory-Intro-to-Software-Dev
+
+
+
+## Running Tests
+
+This project includes a complete suite of unit and integration tests to verify backend functionality, including:
+
+- Login authentication
+- Product database operations
+- HTTP endpoint responses
+
+All tests are designed to run in **isolation** using **in-memory SQLite databases**, ensuring that no real data is modified or required.
+
+###  Test Types
+
+| File                     | Description                                                        |
+|--------------------------|--------------------------------------------------------------------|
+| `tests/integration_tests.rs` | Tests API endpoints such as `/health` and `/products`               |
+| `tests/db_tests.rs`           | Tests inserting and retrieving products in a temporary SQLite database |
+| `tests/auth_tests.rs`         | Tests login logic for valid, invalid, and unknown users              |
+
+### 🔧 Requirements
+
+Before running tests, ensure:
+- Rust is installed (`cargo` command available)
+- You are in the project root (where `Cargo.toml` is located)
+
+No actual `.db` files are required to run the tests.
+
+###  Run All Tests
+
+Run the following command in your terminal:
+
+```bash
+cargo test
+```
+
+This command will compile the code and run all tests across the project.
+
+###  Sample Output
+
+```
+PS C:\Users\hddav\OneDrive\Documents\GitHub\QuickStock-Rust\QuickStock-Rust> cargo test
+>>
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.46s
+     Running unittests src\lib.rs (target\debug\deps\quickstock_rust-a2d87785c88fc943.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\quickstock_rust-8c822fe7e3a3b660.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\auth_tests.rs (target\debug\deps\auth_tests-373a8a505946a56a.exe)
+
+running 3 tests
+test test_unknown_user ... ok
+test test_invalid_password ... ok
+test test_valid_login ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests\db_tests.rs (target\debug\deps\db_tests-70942550cb9aa477.exe)
+
+running 1 test
+test test_user_db_insert_and_query ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\integration_tests.rs (target\debug\deps\integration_tests-0c15eb370567a0a7.exe)
+
+running 2 tests
+test test_products_endpoint ... ok
+test test_health_check_endpoint ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests quickstock_rust
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+```
+
+Each test is fast and reliable, making it easy to validate core logic before committing changes or releasing new builds.
